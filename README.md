@@ -203,7 +203,7 @@ $image = new Image(imagePath, $resizeSettings);
 但用户也可根据需要自行修改压缩比，例如：
 
 ````
-//任意压缩
+//900x900，80%压缩率
 $image = new Image(imagePath, new ResizeSettings(900, 900, 80));
 ````
 
