@@ -2,6 +2,64 @@
 require_once 'base_request.php';
 class SkopeSearch extends SkopeBaseRequest {
 
+/**
+     * 上传图片建立索引库
+     * @$images is an array list of array
+     *  array(
+     *      array("im_name"=>"00001","im_url"=>"00001"),
+     *      array("im_name"=>"00002","im_url"=>"00002"),
+     *      array("im_name"=>"00003","im_url"=>"00003"),
+     *      array("im_name"=>"00004","im_url"=>"00004")
+     *  );
+     */
+    function insert($images = array()) {
+        $i = 0;
+        $params = array();
+        foreach ($images as $image){
+            foreach ($image as $key => $value) {
+                $param_key = $key . "[" . $i . "]";
+                $params[$param_key] = $value;
+            }
+            $i++;
+        }
+        return $this->post('insert', $params);
+    }
+
+    //更新图片
+    
+    function update($images = array()) {
+        $i = 0;
+        $params = array();
+        foreach ($images as $image) {
+            foreach ($image as $key => $value) {
+                $param_key = $key . "[" . $i . "]";
+                $params[$param_key] = $value;
+            }
+            $i++;
+        }
+        return $this->post('insert', $params);
+    }
+
+    //删除图片
+    
+    function remove($im_names = array()) {
+        $params = array();
+        $i = 0;
+        foreach ($im_names as $im_name) {
+            $key = "im_names[" . $i . "]";
+            $params[$key] = $im_name;
+            $i++;
+        }
+
+        return $this->post('remove', $params);
+    }
+
+    //上传状态查询
+    
+    function insert_status($trans_id = '') {
+        return $this->get('insert/status/' . $trans_id);
+    }
+
     //
     // 初始认证
     //
@@ -71,64 +129,6 @@ class SkopeSearch extends SkopeBaseRequest {
             $params['image'] = "@{$image->local_filepath}";
             return $this->post_multipart('uploadsearch', $params);
         }
-    }
-
-    /**
-     * 上传图片建立索引库
-     * @$images is an array list of array
-     *  array(
-     *      array("im_name"=>"00001","im_url"=>"00001"),
-     *      array("im_name"=>"00002","im_url"=>"00002"),
-     *      array("im_name"=>"00003","im_url"=>"00003"),
-     *      array("im_name"=>"00004","im_url"=>"00004")
-     *  );
-     */
-    function insert($images = array()) {
-        $i = 0;
-        $params = array();
-        foreach ($images as $image){
-            foreach ($image as $key => $value) {
-                $param_key = $key . "[" . $i . "]";
-                $params[$param_key] = $value;
-            }
-            $i++;
-        }
-        return $this->post('insert', $params);
-    }
-
-    //更新图片
-    
-    function update($images = array()) {
-        $i = 0;
-        $params = array();
-        foreach ($images as $image) {
-            foreach ($image as $key => $value) {
-                $param_key = $key . "[" . $i . "]";
-                $params[$param_key] = $value;
-            }
-            $i++;
-        }
-        return $this->post('insert', $params);
-    }
-
-    //删除图片
-    
-    function remove($im_names = array()) {
-        $params = array();
-        $i = 0;
-        foreach ($im_names as $im_name) {
-            $key = "im_names[" . $i . "]";
-            $params[$key] = $im_name;
-            $i++;
-        }
-
-        return $this->post('remove', $params);
-    }
-
-    //上传状态查询
-    
-    function insert_status($trans_id = '') {
-        return $this->get('insert/status/' . $trans_id);
     }
 
 }
